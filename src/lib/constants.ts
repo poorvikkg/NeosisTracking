@@ -1,0 +1,10 @@
+export const EVENT_NAME = 'IDEATHON 2026'
+export const ORGANIZER = 'Nucleus'
+export const ORGANIZER_URL = 'https://nucleussjec.in'
+export const COLLABORATOR = 'IIC SJEC'
+export const COLLABORATOR_URL = 'https://sjec.ac.in/iic'
+export const COLLEGE_NAME = 'St Joseph Engineering College'
+export const THEME_NAME = 'Ideas Today, Impact Tomorrow'
+export const TEAM_ID_PREFIX = 'IDE'
+export const STATUS = { PENDING: 'PENDING', CHECKED_IN: 'CHECKED_IN' } as const
+export const ROLES = { ADMIN: 'ADMIN', TEAM: 'TEAM' } as const
