@@ -216,9 +216,14 @@ export default function TeamDashboard() {
           </div>
         </div>
         
-        <h2 className="text-3xl font-bold text-white mb-2 leading-tight drop-shadow-sm">
+        <h2 className="text-3xl font-bold text-white mb-1 leading-tight drop-shadow-sm">
           {selectedMember.name}
         </h2>
+        {selectedMember.email && (
+          <p className="text-sm text-zinc-300 mb-3 drop-shadow-sm">
+            {selectedMember.email}
+          </p>
+        )}
         
         <Badge variant="default" className="bg-white/10 text-white border-white/20 px-4 py-1 text-sm font-medium mb-8 backdrop-blur-sm">
           {selectedMember.role}
