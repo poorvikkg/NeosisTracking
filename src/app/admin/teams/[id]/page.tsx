@@ -44,6 +44,29 @@ export default function TeamDetail() {
   }, [id])
 
   const toggleMemberPresence = async (memberId: string, isPresent: boolean) => {
+    // 1. Optimistic UI update
+    setTeam((prevTeam) => {
+      if (!prevTeam) return prevTeam
+      
+      const updatedMembers = prevTeam.team_members.map((m) =>
+        m.id === memberId
+          ? { ...m, is_present: isPresent, marked_at: isPresent ? new Date().toISOString() : null }
+          : m
+      )
+      
+      const presentCount = updatedMembers.filter(m => m.is_present).length
+      const allPresent = presentCount === updatedMembers.length
+      const newStatus = allPresent ? 'CHECKED_IN' : (prevTeam.status === 'CHECKED_IN' ? 'PENDING' : prevTeam.status)
+      
+      return {
+        ...prevTeam,
+        team_members: updatedMembers,
+        status: newStatus,
+        checked_in_at: newStatus === 'CHECKED_IN' && !prevTeam.checked_in_at ? new Date().toISOString() : (newStatus === 'PENDING' ? null : prevTeam.checked_in_at)
+      } as TeamWithMembers
+    })
+
+    // 2. Background API call
     setTogglingId(memberId)
     try {
       const res = await fetch(`/api/admin/teams/${id}/members`, {
@@ -51,12 +74,14 @@ export default function TeamDetail() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ memberId, isPresent }),
       })
-      if (res.ok) {
+      
+      if (!res.ok) {
+        // Revert on failure
         await fetchTeam()
-      } else {
         toast('Failed to update', 'error')
       }
     } catch {
+      await fetchTeam()
       toast('Network error', 'error')
     } finally {
       setTogglingId(null)
