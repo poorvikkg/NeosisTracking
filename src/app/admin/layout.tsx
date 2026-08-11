@@ -26,6 +26,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }
 
+  // Do not show the admin layout wrapper on the login page
+  if (pathname === '/admin/login') {
+    return <>{children}</>
+  }
+
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-inter selection:bg-zinc-800 selection:text-white">
       {/* Top Navigation Bar */}
