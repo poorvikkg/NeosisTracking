@@ -9,7 +9,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { STATUS } from '@/lib/constants';
 import { formatDate, formatTime } from '@/lib/utils';
 import type { TeamWithMembers, TeamMember } from '@/lib/types';
-import { CheckCircle2, Clock, Users, UserCircle2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Clock, Users, UserCircle2, ArrowRight, Maximize2, Minimize2, X, IdCard } from 'lucide-react';
 
 export default function TeamDashboard() {
   const router = useRouter();
@@ -19,6 +19,7 @@ export default function TeamDashboard() {
   const [mounted, setMounted] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [memberChecked, setMemberChecked] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -178,142 +179,130 @@ export default function TeamDashboard() {
 
   // ─── Main Dashboard (member selected) ───
   const isPending = team.status === STATUS.PENDING;
+  
+  // Render the digital ID card (used in both normal and fullscreen modes)
+  const renderIDCard = (fullscreen: boolean) => (
+    <div className={`relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-black shadow-2xl transition-all duration-500 ${fullscreen ? 'w-full max-w-sm mx-auto shadow-white/5' : 'w-full max-w-md mx-auto'}`}>
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-overlay"></div>
+      <div className="absolute -top-32 -right-32 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+      <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+      
+      {/* Maximize / Close Button */}
+      <button 
+        onClick={() => setIsFullscreen(!isFullscreen)}
+        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors backdrop-blur-md"
+      >
+        {fullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+      </button>
 
-  return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* A. Welcome Header */}
-      <div className="animate-slide-up" style={{ animationDelay: '0ms' }}>
-        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-1">
-          Welcome, {selectedMember.name.split(' ')[0]}
-        </h1>
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <Badge variant="default">
-            <span className="font-mono text-xs sm:text-sm">{team.id}</span>
-          </Badge>
-          <span className="text-xs sm:text-sm text-zinc-400">{team.team_name}</span>
-          <span className="text-zinc-600">·</span>
-          <button
-            onClick={handleSwitchMember}
-            className="text-xs text-zinc-500 hover:text-white transition-colors underline underline-offset-2"
-          >
-            Not {selectedMember.name.split(' ')[0]}?
-          </button>
+      {/* Header */}
+      <div className="px-6 py-5 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center gap-2">
+          <IdCard className="w-5 h-5 text-emerald-400" />
+          <span className="font-heading font-semibold text-white tracking-wide uppercase text-sm">Participant Badge</span>
         </div>
       </div>
 
-      {/* B. Status Card */}
-      <Card glass className="animate-slide-up p-4 sm:p-6" style={{ animationDelay: '100ms' }}>
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-full bg-white/10 text-white shrink-0">
-              <CheckCircle2 className="w-5 h-5" />
-            </div>
-            <span className="font-medium text-white text-sm sm:text-base">Registration Confirmed</span>
+      {/* Body */}
+      <div className="p-6 sm:p-8 flex flex-col items-center text-center relative z-10">
+        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border-4 border-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold text-white shadow-xl mb-6">
+          {selectedMember.name.charAt(0).toUpperCase()}
+        </div>
+        
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
+          {selectedMember.name}
+        </h2>
+        
+        <Badge variant="default" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 mb-6">
+          {selectedMember.role}
+        </Badge>
+        
+        <div className="w-full space-y-4 pt-4 border-t border-white/5">
+          <div>
+            <div className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Team</div>
+            <div className="font-medium text-white text-base sm:text-lg">{team.team_name}</div>
           </div>
-
-          <div className="h-px w-full bg-white/10" />
-
-          {isPending ? (
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-full bg-zinc-800 text-zinc-300 shrink-0">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <span className="font-medium text-zinc-300 text-base sm:text-lg">Check-in Pending</span>
-              </div>
-              <p className="text-xs sm:text-sm text-zinc-400 ml-11 sm:ml-12">
-                Show your QR code at the registration desk when you arrive.
-              </p>
-            </div>
-          ) : (
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-full bg-emerald-500/20 text-emerald-400 shrink-0">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <span className="font-medium text-emerald-300 text-base sm:text-lg">Checked In</span>
-              </div>
-              {team.checked_in_at && (
-                <p className="text-xs sm:text-sm text-zinc-400 ml-11 sm:ml-12 font-mono">
-                  Checked in at {formatTime(new Date(team.checked_in_at))} on{' '}
-                  {formatDate(new Date(team.checked_in_at))}
-                </p>
-              )}
-            </div>
-          )}
+          <div>
+            <div className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Institution</div>
+            <div className="font-medium text-zinc-300 text-sm sm:text-base">{team.institution}</div>
+          </div>
         </div>
-      </Card>
+      </div>
 
-      {/* C. Team Members Card */}
-      <Card className="animate-slide-up p-4 sm:p-6" style={{ animationDelay: '200ms' }}>
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <h2 className="flex items-center gap-2 text-base sm:text-lg font-semibold text-white">
-            <Users className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-400" />
-            Team Members
-          </h2>
-          <Badge variant="default">{team.team_members.length}</Badge>
-        </div>
-        <div className="space-y-2.5">
-          {team.team_members.map((member) => {
-            const isYou = member.id === selectedMember.id;
-            return (
-              <div
-                key={member.id}
-                className={`flex items-center justify-between p-3 rounded-xl border gap-2 ${
-                  isYou
-                    ? 'bg-white/[0.07] border-white/15'
-                    : 'bg-white/5 border-white/5'
-                }`}
-              >
-                <div className="min-w-0 flex items-center gap-2">
-                  <div className="font-medium text-white text-xs sm:text-sm truncate">{member.name}</div>
-                  {isYou && (
-                    <Badge variant="default" className="text-[10px] bg-white/20 border-white/10">You</Badge>
-                  )}
-                </div>
-                <Badge variant="default" className="shrink-0 text-[11px] sm:text-xs">{member.role}</Badge>
-              </div>
-            );
-          })}
-        </div>
-      </Card>
-
-      {/* E. Check-in QR Card */}
+      {/* Footer & QR */}
       {isPending && (
-        <Card
-          className="animate-slide-up border-white/10 bg-white/5 p-4 sm:p-6"
-          style={{ animationDelay: '400ms' }}
-        >
-          <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
-            <h3 className="font-heading font-semibold text-lg sm:text-xl text-white">
-              Ready to check in?
-            </h3>
-            <p className="text-xs sm:text-sm text-zinc-400 mb-2">
-              Present this QR code to the registration desk to check in.
-            </p>
-            
-            <div className="p-3 sm:p-4 bg-white rounded-2xl max-w-[240px] sm:max-w-[260px] w-full flex items-center justify-center shadow-xl">
-              {mounted ? (
-                <QRCodeCanvas 
-                  value={`${window.location.origin}/admin/teams/${team.id}`}
-                  size={190}
-                  level="H"
-                  includeMargin={true}
-                  fgColor="#000000"
-                  style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
-                />
-              ) : (
-                <div className="w-[190px] h-[190px] bg-zinc-100 rounded-lg animate-pulse" />
-              )}
-            </div>
-            
-            <p className="text-xs text-zinc-500 mt-2 font-mono">
-              Team Code: {team.id}
-            </p>
+        <div className="px-6 py-6 border-t border-white/5 bg-white/[0.02] flex flex-col items-center">
+          <p className="text-xs text-zinc-400 mb-3 uppercase tracking-wider font-semibold">Check-in QR</p>
+          <div className="p-3 bg-white rounded-xl shadow-inner">
+            {mounted ? (
+              <QRCodeCanvas 
+                value={`${window.location.origin}/admin/teams/${team.id}`}
+                size={120}
+                level="H"
+                includeMargin={false}
+                fgColor="#000000"
+              />
+            ) : (
+              <div className="w-[120px] h-[120px] bg-zinc-100 rounded-lg animate-pulse" />
+            )}
           </div>
-        </Card>
+          <p className="text-xs text-zinc-500 mt-3 font-mono tracking-widest">{team.id}</p>
+        </div>
+      )}
+      
+      {!isPending && (
+        <div className="px-6 py-4 border-t border-emerald-500/20 bg-emerald-500/10 flex items-center justify-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <span className="text-sm font-medium text-emerald-400">Successfully Checked In</span>
+        </div>
       )}
     </div>
   );
+
+  return (
+    <>
+      {/* Fullscreen Overlay */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+          {renderIDCard(true)}
+        </div>
+      )}
+
+      {/* Normal Dashboard View */}
+      <div className={`space-y-6 sm:space-y-8 ${isFullscreen ? 'opacity-0 pointer-events-none hidden' : 'animate-slide-up'}`}>
+        {/* Welcome Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-1">
+              Welcome, {selectedMember.name.split(' ')[0]}
+            </h1>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="text-xs sm:text-sm text-zinc-400">Team {team.team_name}</span>
+              <span className="text-zinc-600">·</span>
+              <button
+                onClick={handleSwitchMember}
+                className="text-xs text-zinc-500 hover:text-white transition-colors underline underline-offset-2"
+              >
+                Not {selectedMember.name.split(' ')[0]}? Switch
+              </button>
+            </div>
+          </div>
+          
+          <Badge variant="default" className="self-start sm:self-auto font-mono text-xs sm:text-sm bg-white/5 border-white/10">
+            {team.id}
+          </Badge>
+        </div>
+
+        {/* Digital ID Card inside regular flow */}
+        {renderIDCard(false)}
+        
+        <p className="text-center text-xs text-zinc-500">
+          Tap the maximize icon in the top right of the ID card to show it fullscreen.
+        </p>
+      </div>
+    </>
+  );
 }
+
 
