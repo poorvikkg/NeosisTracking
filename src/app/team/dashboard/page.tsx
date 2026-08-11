@@ -65,7 +65,6 @@ export default function TeamDashboard() {
   const isPending = team.status === STATUS.PENDING;
 
   return (
-  return (
     <div className="space-y-4 sm:space-y-6">
       {/* A. Welcome Header */}
       <div className="animate-slide-up" style={{ animationDelay: '0ms' }}>
