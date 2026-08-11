@@ -14,10 +14,10 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "IDEATHON 2026 — Check-in System",
+  title: "NOESIS 2026 — Check-in System",
   description:
-    "Official check-in portal for IDEATHON 2026. Teams can view their dashboard, check-in at the venue, and track event progress.",
-  keywords: ["ideathon", "check-in", "hackathon", "2026", "event"],
+    "Official check-in portal for NOESIS 2026. Teams can view their dashboard, check-in at the venue, and track event progress.",
+  keywords: ["noesis", "check-in", "hackathon", "2026", "event"],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,4 +1,4 @@
-export const EVENT_NAME = 'IDEATHON 2026'
+export const EVENT_NAME = 'NOESIS 2026'
 export const ORGANIZER = 'Nucleus'
 export const ORGANIZER_URL = 'https://nucleussjec.in'
 export const COLLABORATOR = 'IIC SJEC'
