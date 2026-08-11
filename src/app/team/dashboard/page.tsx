@@ -9,7 +9,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { STATUS } from '@/lib/constants';
 import { formatDate, formatTime } from '@/lib/utils';
 import type { TeamWithMembers, TeamMember } from '@/lib/types';
-import { CheckCircle2, Clock, Users, UserCircle2, ArrowRight, Maximize2, Minimize2, X, IdCard } from 'lucide-react';
+import { CheckCircle2, Clock, Users, UserCircle2, ArrowRight, ArrowLeft, Maximize2, Minimize2, X, IdCard } from 'lucide-react';
 
 export default function TeamDashboard() {
   const router = useRouter();
@@ -45,6 +45,9 @@ export default function TeamDashboard() {
           const found = teamObj.team_members.find((m) => m.id === savedMemberId);
           if (found) {
             setSelectedMember(found);
+            if (window.location.hash !== '#member') {
+              window.location.hash = 'member';
+            }
           }
         }
       } catch (err: unknown) {
@@ -59,16 +62,31 @@ export default function TeamDashboard() {
     fetchData();
   }, [router]);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash !== '#member') {
+        setSelectedMember(null);
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   const handleSelectMember = (member: TeamMember) => {
     if (!team) return;
     setSelectedMember(member);
     localStorage.setItem(`selected_member_${team.id}`, member.id);
+    window.location.hash = 'member';
   };
 
   const handleSwitchMember = () => {
     if (!team) return;
-    setSelectedMember(null);
     localStorage.removeItem(`selected_member_${team.id}`);
+    if (window.location.hash === '#member') {
+      window.history.back();
+    } else {
+      setSelectedMember(null);
+    }
   };
 
   if (loading || !memberChecked) {
@@ -254,6 +272,15 @@ export default function TeamDashboard() {
 
       {/* Normal Dashboard View */}
       <div className={`space-y-6 sm:space-y-8 ${isFullscreen ? 'opacity-0 pointer-events-none hidden' : 'animate-slide-up'}`}>
+        {/* Back Button */}
+        <button 
+          onClick={handleSwitchMember}
+          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors w-fit group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm font-medium">Back to Team List</span>
+        </button>
+
         {/* Welcome Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
