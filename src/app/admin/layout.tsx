@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-inter selection:bg-zinc-800 selection:text-white">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950">
         <div className="flex h-16 items-center px-4 sm:px-6 max-w-7xl mx-auto w-full justify-between">
           <div className="flex items-center gap-8">
             <Link href="/admin/dashboard" className="font-outfit font-bold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 const Icon = item.icon
                 return (
                   <Link key={item.href} href={item.href}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-zinc-900'}`}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'}`}
                   >
                     <Icon size={16} />
                     {item.label}
@@ -67,11 +67,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Mobile Toggle */}
           <button 
-            className="md:hidden p-2.5 -mr-2 text-zinc-300 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors focus:outline-none" 
+            className="md:hidden p-2 text-zinc-100 bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 rounded-lg transition-colors focus:outline-none shadow-sm" 
             onClick={() => setMobileOpen(true)}
             aria-label="Open Navigation Menu"
           >
-            <Menu size={24} />
+            <Menu size={20} />
           </button>
         </div>
 
@@ -80,16 +80,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <>
             {/* Backdrop */}
             <div 
-              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm animate-in fade-in"
+              className="md:hidden fixed inset-0 z-40 bg-black/80 animate-in fade-in"
               onClick={() => setMobileOpen(false)}
             />
             
             {/* Sidebar */}
-            <div className="md:hidden fixed top-0 right-0 z-50 h-full w-[280px] bg-black border-l border-zinc-800 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right-full duration-300">
+            <div className="md:hidden fixed top-0 right-0 z-50 h-full w-[280px] bg-zinc-950 border-l border-zinc-800 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right-full duration-300">
               <div className="flex justify-between items-center mb-8">
                 <span className="font-outfit font-bold text-lg tracking-tight text-white">Menu</span>
                 <button 
-                  className="p-2 -mr-2 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors focus:outline-none"
+                  className="p-2 text-zinc-300 hover:text-white bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 rounded-lg transition-colors focus:outline-none"
                   onClick={() => setMobileOpen(false)}
                 >
                   <X size={20} />
