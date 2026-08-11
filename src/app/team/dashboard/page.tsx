@@ -182,7 +182,7 @@ export default function TeamDashboard() {
   
   // Render the digital ID card (used in both normal and fullscreen modes)
   const renderIDCard = (fullscreen: boolean) => (
-    <div className={`relative overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-b from-zinc-800 to-black shadow-2xl transition-all duration-500 flex flex-col ${fullscreen ? 'w-full h-auto aspect-[3/4] max-w-sm mx-auto shadow-[0_0_50px_rgba(255,255,255,0.1)]' : 'w-full max-w-sm mx-auto'}`}>
+    <div className={`relative overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-b from-zinc-800 to-black shadow-2xl transition-all duration-500 flex flex-col ${fullscreen ? 'w-full h-auto max-h-[95vh] overflow-y-auto no-scrollbar max-w-sm mx-auto shadow-[0_0_50px_rgba(255,255,255,0.1)]' : 'w-full max-w-sm mx-auto'}`}>
       
       {/* Lanyard Hole Punch (decorative) */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 rounded-full bg-black/60 border border-white/10 shadow-inner z-30 hidden sm:block"></div>
