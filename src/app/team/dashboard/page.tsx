@@ -182,81 +182,59 @@ export default function TeamDashboard() {
   
   // Render the digital ID card (used in both normal and fullscreen modes)
   const renderIDCard = (fullscreen: boolean) => (
-    <div className={`relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-black shadow-2xl transition-all duration-500 ${fullscreen ? 'w-full max-w-sm mx-auto shadow-white/5' : 'w-full max-w-md mx-auto'}`}>
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-overlay"></div>
-      <div className="absolute -top-32 -right-32 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-      <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+    <div className={`relative overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-b from-zinc-800 to-black shadow-2xl transition-all duration-500 flex flex-col ${fullscreen ? 'w-full h-auto aspect-[3/4] max-w-sm mx-auto shadow-[0_0_50px_rgba(255,255,255,0.1)]' : 'w-full max-w-sm mx-auto'}`}>
+      
+      {/* Lanyard Hole Punch (decorative) */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 rounded-full bg-black/60 border border-white/10 shadow-inner z-30 hidden sm:block"></div>
+
+      {/* Dynamic Holographic Background */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.05] pointer-events-none mix-blend-overlay z-0"></div>
+      <div className="absolute -top-[20%] -right-[20%] w-[70%] h-[50%] bg-emerald-500/30 rounded-full blur-[100px] pointer-events-none z-0"></div>
+      <div className="absolute -bottom-[10%] -left-[20%] w-[80%] h-[60%] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="absolute top-[30%] left-[20%] w-[50%] h-[40%] bg-purple-500/20 rounded-full blur-[90px] pointer-events-none z-0 mix-blend-screen"></div>
       
       {/* Maximize / Close Button */}
       <button 
         onClick={() => setIsFullscreen(!isFullscreen)}
-        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors backdrop-blur-md"
+        className="absolute top-5 right-5 z-40 p-2.5 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-lg"
       >
-        {fullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+        {fullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
       </button>
 
-      {/* Header */}
-      <div className="px-6 py-5 border-b border-white/5 bg-white/[0.02]">
-        <div className="flex items-center gap-2">
-          <IdCard className="w-5 h-5 text-emerald-400" />
-          <span className="font-heading font-semibold text-white tracking-wide uppercase text-sm">Participant Badge</span>
-        </div>
+      {/* Event Header */}
+      <div className="w-full pt-10 pb-6 px-6 bg-gradient-to-b from-white/10 to-transparent relative z-10 flex flex-col items-center border-b border-white/10">
+        <div className="text-emerald-400 font-bold tracking-[0.2em] text-xs mb-1 uppercase">Official Participant</div>
+        <div className="font-heading font-black text-white text-2xl tracking-wide uppercase drop-shadow-md">IDEATHON '26</div>
       </div>
 
       {/* Body */}
-      <div className="p-6 sm:p-8 flex flex-col items-center text-center relative z-10">
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border-4 border-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold text-white shadow-xl mb-6">
-          {selectedMember.name.charAt(0).toUpperCase()}
+      <div className="p-8 flex flex-col items-center text-center relative z-20 flex-1">
+        <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-zinc-700 to-zinc-900 p-1 mb-6 shadow-2xl relative">
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 to-blue-500 rounded-3xl opacity-20 blur-md -z-10"></div>
+          <div className="w-full h-full rounded-[1.35rem] bg-zinc-900 flex items-center justify-center text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-400 border border-white/10">
+            {selectedMember.name.charAt(0).toUpperCase()}
+          </div>
         </div>
         
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
+        <h2 className="text-3xl font-bold text-white mb-2 leading-tight drop-shadow-sm">
           {selectedMember.name}
         </h2>
         
-        <Badge variant="default" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 mb-6">
+        <Badge variant="default" className="bg-white/10 text-white border-white/20 px-4 py-1 text-sm font-medium mb-8 backdrop-blur-sm">
           {selectedMember.role}
         </Badge>
         
-        <div className="w-full space-y-4 pt-4 border-t border-white/5">
+        <div className="w-full space-y-5 bg-black/40 p-5 rounded-2xl border border-white/5 backdrop-blur-md">
           <div>
-            <div className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Team</div>
-            <div className="font-medium text-white text-base sm:text-lg">{team.team_name}</div>
+            <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Team Name</div>
+            <div className="font-semibold text-white text-lg">{team.team_name}</div>
           </div>
           <div>
-            <div className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Institution</div>
-            <div className="font-medium text-zinc-300 text-sm sm:text-base">{team.institution}</div>
+            <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Institution</div>
+            <div className="font-medium text-zinc-300 text-sm leading-snug">{team.institution}</div>
           </div>
         </div>
       </div>
-
-      {/* Footer & QR */}
-      {isPending && (
-        <div className="px-6 py-6 border-t border-white/5 bg-white/[0.02] flex flex-col items-center">
-          <p className="text-xs text-zinc-400 mb-3 uppercase tracking-wider font-semibold">Check-in QR</p>
-          <div className="p-3 bg-white rounded-xl shadow-inner">
-            {mounted ? (
-              <QRCodeCanvas 
-                value={`${window.location.origin}/admin/teams/${team.id}`}
-                size={120}
-                level="H"
-                includeMargin={false}
-                fgColor="#000000"
-              />
-            ) : (
-              <div className="w-[120px] h-[120px] bg-zinc-100 rounded-lg animate-pulse" />
-            )}
-          </div>
-          <p className="text-xs text-zinc-500 mt-3 font-mono tracking-widest">{team.id}</p>
-        </div>
-      )}
-      
-      {!isPending && (
-        <div className="px-6 py-4 border-t border-emerald-500/20 bg-emerald-500/10 flex items-center justify-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          <span className="text-sm font-medium text-emerald-400">Successfully Checked In</span>
-        </div>
-      )}
     </div>
   );
 
@@ -264,7 +242,7 @@ export default function TeamDashboard() {
     <>
       {/* Fullscreen Overlay */}
       {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col justify-center p-4 sm:p-6 animate-in fade-in duration-300">
           {renderIDCard(true)}
         </div>
       )}
@@ -294,12 +272,78 @@ export default function TeamDashboard() {
           </Badge>
         </div>
 
-        {/* Digital ID Card inside regular flow */}
-        {renderIDCard(false)}
-        
-        <p className="text-center text-xs text-zinc-500">
-          Tap the maximize icon in the top right of the ID card to show it fullscreen.
-        </p>
+        {/* Two-column layout for desktop: ID card on left, QR on right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
+          
+          {/* Digital ID Card */}
+          <div className="flex flex-col items-center">
+            {renderIDCard(false)}
+            <p className="text-center text-xs text-zinc-500 mt-4 flex items-center justify-center gap-1">
+              <Maximize2 size={12} /> Tap the maximize icon on the badge for fullscreen.
+            </p>
+          </div>
+
+          {/* QR Code and Status Section */}
+          <div className="space-y-6">
+            <Card className="border-white/10 bg-white/5 p-6 sm:p-8 flex flex-col items-center text-center shadow-lg">
+              {isPending ? (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4">
+                    <Clock size={24} />
+                  </div>
+                  <h3 className="font-heading font-semibold text-xl text-white mb-2">
+                    Check-in QR Code
+                  </h3>
+                  <p className="text-sm text-zinc-400 mb-6 max-w-xs">
+                    Present this code at the registration desk to confirm your team's arrival.
+                  </p>
+                  
+                  <div className="p-4 bg-white rounded-2xl w-full max-w-[220px] aspect-square flex items-center justify-center shadow-2xl relative overflow-hidden group">
+                    {mounted ? (
+                      <QRCodeCanvas 
+                        value={`${window.location.origin}/admin/teams/${team.id}`}
+                        size={200}
+                        level="H"
+                        includeMargin={false}
+                        fgColor="#000000"
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-zinc-100 animate-pulse" />
+                    )}
+                    {/* Scan line animation effect */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent h-1/2 -translate-y-full group-hover:animate-scan pointer-events-none"></div>
+                  </div>
+                  
+                  <div className="mt-6 flex flex-col items-center">
+                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Team Code</span>
+                    <span className="text-lg font-mono text-white tracking-widest px-4 py-1.5 bg-black/50 rounded-lg border border-white/10">{team.id}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
+                    <CheckCircle2 size={32} />
+                  </div>
+                  <h3 className="font-heading font-semibold text-2xl text-white mb-2">
+                    Checked In
+                  </h3>
+                  <p className="text-sm text-zinc-400">
+                    Your team's registration is confirmed. You're all set!
+                  </p>
+                  {team.checked_in_at && (
+                    <div className="mt-6 inline-flex flex-col items-center p-4 bg-black/40 rounded-xl border border-white/5">
+                      <span className="text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-1">Timestamp</span>
+                      <span className="text-sm text-zinc-300 font-mono">
+                        {formatDate(new Date(team.checked_in_at))} at {formatTime(new Date(team.checked_in_at))}
+                      </span>
+                    </div>
+                  )}
+                </>
+              )}
+            </Card>
+          </div>
+        </div>
       </div>
     </>
   );
