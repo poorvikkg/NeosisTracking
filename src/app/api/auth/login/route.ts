@@ -1,24 +1,25 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { comparePassword, createToken } from '@/lib/auth';
+import { createToken } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
-    const { username, password } = await request.json();
+    const { teamName, teamCode } = await request.json();
     const supabase = await createServerSupabaseClient();
 
+    // Look up team by id (team code) and verify team_name matches
     const { data: team, error } = await supabase
       .from('teams')
       .select('*')
-      .eq('username', username)
+      .eq('id', teamCode.trim().toUpperCase())
       .single();
 
     if (error || !team) {
-      return Response.json({ error: 'Invalid credentials' }, { status: 401 });
+      return Response.json({ error: 'Invalid team code. Please check and try again.' }, { status: 401 });
     }
 
-    const isValid = await comparePassword(password, team.password_hash);
-    if (!isValid) {
-      return Response.json({ error: 'Invalid credentials' }, { status: 401 });
+    // Case-insensitive team name comparison
+    if (team.team_name.toLowerCase() !== teamName.trim().toLowerCase()) {
+      return Response.json({ error: 'Team name does not match the given code.' }, { status: 401 });
     }
 
     const token = await createToken({ id: team.id, role: 'TEAM', username: team.username });

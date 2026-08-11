@@ -10,8 +10,8 @@ import { EVENT_NAME } from '@/lib/constants';
 export default function TeamLogin() {
   const router = useRouter();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [teamName, setTeamName] = useState('');
+  const [teamCode, setTeamCode] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
@@ -42,7 +42,7 @@ export default function TeamLogin() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ teamName, teamCode }),
       });
 
       if (res.ok) {
@@ -70,34 +70,36 @@ export default function TeamLogin() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-heading font-bold mb-2">Team Login</h1>
-          <p className="text-zinc-400">{EVENT_NAME}</p>
+      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-2">Team Login</h1>
+          <p className="text-zinc-400 text-sm sm:text-base">{EVENT_NAME}</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Username (Team ID)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Team Name</label>
             <Input 
               type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              value={teamName} 
+              onChange={(e) => setTeamName(e.target.value)} 
               required
               className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700"
-              placeholder="e.g. IDE-001"
+              placeholder="e.g. Sahaaya"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Team Code</label>
             <Input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+              type="text" 
+              value={teamCode} 
+              onChange={(e) => setTeamCode(e.target.value.toUpperCase())} 
               required
-              className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700"
+              className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700 font-mono tracking-wider"
+              placeholder="e.g. BNV-673"
             />
+            <p className="text-xs text-zinc-500 mt-1.5">The unique code assigned to your team</p>
           </div>
           
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -120,3 +122,4 @@ export default function TeamLogin() {
     </div>
   );
 }
+
