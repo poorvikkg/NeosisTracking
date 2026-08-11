@@ -99,55 +99,55 @@ export default function TeamDetail() {
   const isCheckedIn = team.status === STATUS.CHECKED_IN
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-5 sm:space-y-6">
       {/* Back link */}
       <Link
         href="/admin/dashboard"
-        className="text-zinc-500 hover:text-white flex items-center gap-2 w-fit text-sm transition-colors"
+        className="text-zinc-400 hover:text-white flex items-center gap-2 w-fit text-sm transition-colors py-1"
       >
-        <ArrowLeft size={14} /> Dashboard
+        <ArrowLeft size={16} /> Back to Dashboard
       </Link>
 
       {/* Team header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 bg-zinc-900/60 p-4 rounded-2xl border border-zinc-800">
         <div>
-          <h1 className="text-2xl font-heading font-bold text-white">{team.team_name}</h1>
-          <div className="flex items-center gap-3 mt-1">
-            <span className="font-mono text-sm text-zinc-500">{team.id}</span>
-            <span className="text-zinc-600">·</span>
-            <span className="text-sm text-zinc-400">{team.institution}</span>
+          <h1 className="text-xl sm:text-2xl font-heading font-bold text-white leading-tight">{team.team_name}</h1>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5">
+            <span className="font-mono text-xs sm:text-sm text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded">{team.id}</span>
+            <span className="text-zinc-600 hidden sm:inline">·</span>
+            <span className="text-xs sm:text-sm text-zinc-400">{team.institution}</span>
           </div>
         </div>
-        <Badge variant={isCheckedIn ? 'success' : 'warning'}>
+        <Badge variant={isCheckedIn ? 'success' : 'warning'} className="self-start sm:self-auto text-xs px-3 py-1">
           {isCheckedIn ? 'Checked In' : 'Pending'}
         </Badge>
       </div>
 
       {/* Status banner */}
       {isCheckedIn && team.checked_in_at && (
-        <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-          <Check size={16} className="text-white" />
-          <span className="text-sm text-zinc-300">
+        <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3">
+          <Check size={18} className="text-emerald-400 shrink-0" />
+          <span className="text-xs sm:text-sm text-emerald-200">
             Checked in at {formatTime(team.checked_in_at)}
           </span>
         </div>
       )}
 
       {/* Progress bar */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-sm">
+      <div className="space-y-2 bg-zinc-900/40 p-4 rounded-xl border border-zinc-800/80">
+        <div className="flex items-center justify-between text-xs sm:text-sm">
           <span className="text-zinc-400 flex items-center gap-2">
             <Users size={14} />
-            Members present
+            Attendance Progress
           </span>
-          <span className="text-white font-mono">
-            {presentCount}/{totalCount}
+          <span className="text-white font-mono font-semibold">
+            {presentCount} / {totalCount} present
           </span>
         </div>
-        <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ${
-              allPresent ? 'bg-white' : 'bg-zinc-500'
+              allPresent ? 'bg-emerald-400' : 'bg-white'
             }`}
             style={{ width: `${totalCount > 0 ? (presentCount / totalCount) * 100 : 0}%` }}
           />
@@ -155,9 +155,10 @@ export default function TeamDetail() {
       </div>
 
       {/* Members list */}
-      <Card className="p-0 overflow-hidden">
-        <div className="px-4 py-3 border-b border-zinc-800 bg-black/30">
-          <h3 className="text-sm font-medium text-zinc-400">Mark attendance</h3>
+      <Card className="p-0 overflow-hidden border-zinc-800">
+        <div className="px-4 py-3 border-b border-zinc-800 bg-black/40 flex items-center justify-between">
+          <h3 className="text-xs sm:text-sm font-medium text-zinc-400">Mark Attendance</h3>
+          <span className="text-[11px] text-zinc-500">Tap member to toggle</span>
         </div>
         <div className="divide-y divide-zinc-800/50">
           {team.team_members?.map((member: TeamMember) => {
@@ -167,55 +168,56 @@ export default function TeamDetail() {
                 key={member.id}
                 onClick={() => toggleMemberPresence(member.id, !member.is_present)}
                 disabled={isToggling}
-                className={`w-full flex items-center justify-between px-4 py-4 text-left transition-colors hover:bg-zinc-800/30 ${
-                  member.is_present ? 'bg-white/[0.02]' : ''
+                className={`w-full flex items-center justify-between px-3.5 py-3.5 sm:px-4 sm:py-4 text-left transition-colors hover:bg-zinc-800/40 min-h-[56px] active:bg-zinc-800/60 ${
+                  member.is_present ? 'bg-white/[0.03]' : ''
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   {/* Avatar circle */}
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium shrink-0 transition-colors ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium shrink-0 transition-colors ${
                       member.is_present
-                        ? 'bg-white text-black'
-                        : 'bg-zinc-800 text-zinc-400'
+                        ? 'bg-emerald-400 text-black font-semibold'
+                        : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
                     }`}
                   >
                     {member.is_present ? (
-                      <Check size={16} />
+                      <Check size={18} />
                     ) : (
                       member.name.charAt(0).toUpperCase()
                     )}
                   </div>
 
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium text-white truncate">{member.name}</div>
-                    <div className="text-xs text-zinc-500 truncate">
+                  <div className="min-w-0 pr-2">
+                    <div className="text-sm font-medium text-white truncate leading-snug">{member.name}</div>
+                    <div className="text-xs text-zinc-400 truncate">
                       {member.role}
-                      {member.email && ` · ${member.email}`}
+                      {member.email && <span className="hidden sm:inline"> · {member.email}</span>}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0 ml-3">
-                  {isToggling && (
+                <div className="flex items-center gap-2.5 shrink-0 ml-2">
+                  {isToggling ? (
                     <div className="w-4 h-4 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
-                  )}
-                  {member.is_present && member.marked_at && !isToggling && (
-                    <span className="text-xs text-zinc-500 flex items-center gap-1">
-                      <Clock size={10} />
-                      {formatTime(member.marked_at)}
-                    </span>
+                  ) : (
+                    member.is_present && member.marked_at && (
+                      <span className="text-[11px] text-zinc-500 font-mono hidden sm:flex items-center gap-1">
+                        <Clock size={10} />
+                        {formatTime(member.marked_at)}
+                      </span>
+                    )
                   )}
                   {/* Toggle indicator */}
                   <div
-                    className={`w-10 h-6 rounded-full relative transition-colors ${
-                      member.is_present ? 'bg-white' : 'bg-zinc-700'
+                    className={`w-11 h-6 rounded-full relative transition-colors ${
+                      member.is_present ? 'bg-emerald-400' : 'bg-zinc-800 border border-zinc-700'
                     }`}
                   >
                     <div
                       className={`absolute top-1 w-4 h-4 rounded-full transition-all ${
                         member.is_present
-                          ? 'left-5 bg-black'
+                          ? 'left-6 bg-black'
                           : 'left-1 bg-zinc-400'
                       }`}
                     />
@@ -233,17 +235,17 @@ export default function TeamDetail() {
           <Button
             variant="ghost"
             onClick={() => forceStatusOverride('PENDING')}
-            className="text-xs text-zinc-600 gap-1.5"
+            className="text-xs text-zinc-500 hover:text-red-400 gap-1.5"
           >
-            <ShieldAlert size={12} /> Undo check-in
+            <ShieldAlert size={14} /> Undo check-in
           </Button>
         ) : (
           <Button
             variant="ghost"
             onClick={() => forceStatusOverride('CHECKED_IN')}
-            className="text-xs text-zinc-600 gap-1.5"
+            className="text-xs text-zinc-500 hover:text-emerald-400 gap-1.5"
           >
-            <ShieldAlert size={12} /> Force check-in
+            <ShieldAlert size={14} /> Force check-in
           </Button>
         )}
       </div>

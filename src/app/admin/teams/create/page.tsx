@@ -70,11 +70,11 @@ export default function CreateTeam() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-outfit font-bold">Create New Team</h1>
+    <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
+      <h1 className="text-xl sm:text-2xl font-outfit font-bold">Create New Team</h1>
       
-      <Card className="p-6 border-white/10 bg-zinc-900/50">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <Card className="p-4 sm:p-6 border-white/10 bg-zinc-900/50 rounded-2xl">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1 text-zinc-300">Team Name</label>
@@ -87,51 +87,60 @@ export default function CreateTeam() {
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-              <h3 className="text-lg font-medium text-zinc-200">Members ({members.length}/6)</h3>
+            <div className="flex justify-between items-center mb-3 sm:mb-4 border-b border-white/10 pb-2">
+              <h3 className="text-base sm:text-lg font-medium text-zinc-200">Members ({members.length}/6)</h3>
               {members.length < 6 && (
-                <Button type="button" variant="secondary" size="sm" onClick={handleAddMember} className="gap-2">
+                <Button type="button" variant="secondary" size="sm" onClick={handleAddMember} className="gap-1.5 text-xs sm:text-sm">
                   <Plus size={16} /> Add Member
                 </Button>
               )}
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {members.map((member, index) => (
-                <div key={index} className="flex flex-col md:flex-row gap-4 items-start md:items-end p-4 bg-black/20 rounded-lg border border-white/5 relative">
-                  <div className="flex-1 w-full">
-                    <label className="block text-xs text-zinc-400 mb-1">Name</label>
-                    <Input required value={member.name} onChange={e => handleMemberChange(index, 'name', e.target.value)} placeholder="Member Name" />
+                <div key={index} className="p-3.5 sm:p-4 bg-black/30 rounded-xl border border-white/10 space-y-3">
+                  <div className="flex justify-between items-center pb-1 border-b border-white/5">
+                    <span className="text-xs font-semibold text-zinc-400">Member #{index + 1}</span>
+                    {members.length > 1 && (
+                      <button 
+                        type="button" 
+                        className="text-xs text-zinc-500 hover:text-red-400 flex items-center gap-1 p-1" 
+                        onClick={() => handleRemoveMember(index)}
+                      >
+                        <X size={14} /> Remove
+                      </button>
+                    )}
                   </div>
-                  <div className="flex-1 w-full">
-                    <label className="block text-xs text-zinc-400 mb-1">Email (Optional)</label>
-                    <Input type="email" value={member.email} onChange={e => handleMemberChange(index, 'email', e.target.value)} placeholder="member@example.com" />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                    <div className="w-full">
+                      <label className="block text-xs text-zinc-400 mb-1">Name</label>
+                      <Input required value={member.name} onChange={e => handleMemberChange(index, 'name', e.target.value)} placeholder="Member Name" />
+                    </div>
+                    <div className="w-full">
+                      <label className="block text-xs text-zinc-400 mb-1">Email (Optional)</label>
+                      <Input type="email" value={member.email} onChange={e => handleMemberChange(index, 'email', e.target.value)} placeholder="member@example.com" />
+                    </div>
+                    <div className="w-full">
+                      <label className="block text-xs text-zinc-400 mb-1">Role</label>
+                      <select 
+                        value={member.role} 
+                        onChange={e => handleMemberChange(index, 'role', e.target.value)}
+                        className="w-full bg-black border border-zinc-800 rounded-lg px-3 py-2.5 text-base md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                      >
+                        <option value="Team Lead">Team Lead</option>
+                        <option value="Developer">Developer</option>
+                        <option value="Designer">Designer</option>
+                        <option value="Member">Member</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="w-full md:w-40">
-                    <label className="block text-xs text-zinc-400 mb-1">Role</label>
-                    <select 
-                      value={member.role} 
-                      onChange={e => handleMemberChange(index, 'role', e.target.value)}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
-                    >
-                      <option value="Team Lead">Team Lead</option>
-                      <option value="Developer">Developer</option>
-                      <option value="Designer">Designer</option>
-                      <option value="Member">Member</option>
-                    </select>
-                  </div>
-                  {members.length > 1 && (
-                    <Button type="button" variant="ghost" className="absolute top-2 right-2 md:static md:w-auto w-8 h-8 md:h-auto p-0 md:p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10" onClick={() => handleRemoveMember(index)}>
-                      <X size={18} />
-                    </Button>
-                  )}
                 </div>
               ))}
             </div>
           </div>
 
           <div className="flex justify-end pt-4 border-t border-white/10">
-            <Button type="submit" isLoading={loading} className="w-full md:w-auto">Create Team</Button>
+            <Button type="submit" isLoading={loading} className="w-full md:w-auto h-11 text-sm font-semibold">Create Team</Button>
           </div>
         </form>
       </Card>

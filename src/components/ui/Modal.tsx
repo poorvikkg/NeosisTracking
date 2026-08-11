@@ -28,18 +28,18 @@ export function Modal({ isOpen, onClose, title, children, className = '' }: Moda
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose}>
       <div 
-        className={`bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all scale-100 ${className}`}
+        className={`bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90dvh] overflow-y-auto transform transition-all scale-100 ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
-          <h2 className="text-xl font-semibold text-white">{title}</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-zinc-800 sticky top-0 bg-zinc-900 z-10">
+          <h2 className="text-lg sm:text-xl font-semibold text-white">{title}</h2>
+          <button onClick={onClose} className="p-2 -mr-2 text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-zinc-800">
             <X size={20} />
           </button>
         </div>
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {children}
         </div>
       </div>

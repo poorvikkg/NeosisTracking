@@ -25,7 +25,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
       <input
         ref={ref}
         id={inputId}
-        className={`w-full bg-black border ${error ? 'border-red-500' : 'border-zinc-800'} rounded-lg px-4 py-2.5 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 focus:border-zinc-600 transition-all`}
+        className={`w-full bg-black border ${error ? 'border-red-500' : 'border-zinc-800'} rounded-lg px-4 py-2.5 text-base md:text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 focus:border-zinc-600 transition-all`}
         {...rest}
       />
       {error && (

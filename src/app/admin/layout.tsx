@@ -29,12 +29,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-inter selection:bg-zinc-800 selection:text-white">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/50 backdrop-blur-xl">
-        <div className="flex h-16 items-center px-6 max-w-7xl mx-auto w-full justify-between">
+      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
+        <div className="flex h-16 items-center px-4 sm:px-6 max-w-7xl mx-auto w-full justify-between">
           <div className="flex items-center gap-8">
-            <h1 className="font-outfit font-bold text-xl tracking-tight text-white">
-              {EVENT_NAME} <span className="text-zinc-500 font-normal">Admin</span>
-            </h1>
+            <Link href="/admin/dashboard" className="font-outfit font-bold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
+              {EVENT_NAME} <span className="text-xs sm:text-sm font-normal px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">Admin</span>
+            </Link>
             
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-1">
@@ -62,29 +62,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* Mobile Toggle */}
-          <button className="md:hidden text-zinc-400 hover:text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button 
+            className="md:hidden p-2.5 -mr-2 text-zinc-300 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors focus:outline-none" 
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle Navigation Menu"
+          >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Nav */}
+        {/* Mobile Nav Drawer */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 bg-zinc-950 p-4 space-y-2">
+          <div className="md:hidden border-t border-white/10 bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-2 shadow-2xl animate-in slide-in-from-top-2">
             {navItems.map((item) => {
               const isActive = pathname.startsWith(item.href)
               const Icon = item.icon
               return (
                 <Link key={item.href} href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${isActive ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-zinc-900'}`}
+                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-colors ${isActive ? 'bg-white text-black font-semibold' : 'text-zinc-300 hover:text-white hover:bg-zinc-900'}`}
                 >
                   <Icon size={20} />
                   {item.label}
                 </Link>
               )
             })}
-            <div className="pt-2 mt-2 border-t border-white/10">
-              <Button variant="ghost" className="w-full flex justify-start gap-3 text-zinc-400 hover:text-white" onClick={handleLogout}>
+            <div className="pt-3 mt-2 border-t border-white/10">
+              <Button variant="ghost" className="w-full flex justify-start gap-3 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 py-3 text-base h-12" onClick={handleLogout}>
                 <LogOut size={20} />
                 Logout
               </Button>
@@ -94,7 +98,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </header>
 
       {/* Main content */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8">
+      <main className="flex-1 w-full max-w-7xl mx-auto p-3.5 sm:p-6 md:p-8">
         {children}
       </main>
     </div>

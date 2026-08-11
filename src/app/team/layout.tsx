@@ -23,10 +23,10 @@ export default function TeamLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-sans selection:bg-zinc-800">
-      <nav className="sticky top-0 z-50 w-full backdrop-blur-xl bg-black/50 border-b border-white/10">
+      <nav className="sticky top-0 z-50 w-full backdrop-blur-xl bg-black/80 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="font-heading font-bold text-xl tracking-tight text-white">
+            <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-white">
               {EVENT_NAME}
             </span>
           </div>
@@ -35,15 +35,15 @@ export default function TeamLayout({ children }: { children: React.ReactNode }) 
             size="sm"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="text-zinc-300 hover:text-white"
+            className="text-zinc-300 hover:text-white flex items-center gap-1.5 px-3 py-2 h-9 text-xs sm:text-sm"
           >
-            <LogOut className="h-5 w-5 mr-2" />
-            <span className="hidden sm:inline">Logout</span>
+            <LogOut className="h-4 w-4" />
+            <span>Logout</span>
           </Button>
         </div>
       </nav>
 
-      <main className="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 pb-24">
+      <main className="flex-1 w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 pb-20">
         {children}
       </main>
     </div>

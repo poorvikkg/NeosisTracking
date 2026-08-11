@@ -111,13 +111,6 @@ export default function AdminLogin() {
           </Button>
         </form>
         
-        <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
-          <p className="text-sm text-zinc-500 mb-2">First time setup?</p>
-          <Link href="/admin/setup" className="text-sm text-zinc-300 hover:text-white underline underline-offset-4">
-            Initialize Admin Account
-          </Link>
-        </div>
-        
         <div className="mt-6 text-center text-sm">
           <Link href="/" className="text-zinc-500 hover:text-white transition-colors">
             &larr; Back to home

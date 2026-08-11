@@ -84,7 +84,6 @@ DROP POLICY IF EXISTS "Allow updating members" ON team_members;
 DROP POLICY IF EXISTS "Allow reading schedule" ON schedule;
 
 -- Admins
-CREATE POLICY "Allow initial admin setup" ON admins FOR INSERT TO public WITH CHECK (NOT EXISTS (SELECT 1 FROM admins));
 CREATE POLICY "Allow reading admins" ON admins FOR SELECT TO public USING (true);
 
 -- Teams

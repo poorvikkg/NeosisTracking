@@ -87,42 +87,108 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold font-heading text-white">Dashboard</h1>
-        <Button onClick={() => setScannerOpen(true)} className="gap-2">
-          <ScanLine size={16} /> Scan QR
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold font-heading text-white">Dashboard</h1>
+          <p className="text-xs sm:text-sm text-zinc-400">Manage team attendance and registrations</p>
+        </div>
+        <Button onClick={() => setScannerOpen(true)} className="gap-2 w-full sm:w-auto h-11 justify-center text-sm font-semibold">
+          <ScanLine size={18} /> Scan Team QR
         </Button>
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <StatsCard title="Total Teams" value={stats.total} icon={Users} />
         <StatsCard title="Checked In" value={stats.checkedIn} icon={CheckCircle} valueColor="text-emerald-400" />
         <StatsCard title="Pending" value={stats.pending} icon={Clock} valueColor="text-amber-400" />
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-black/20">
-          <Tabs
-            tabs={[
-              { id: 'ALL', label: 'All Teams', count: stats.total },
-              { id: STATUS.CHECKED_IN, label: 'Checked In', count: stats.checkedIn },
-              { id: STATUS.PENDING, label: 'Pending', count: stats.pending },
-            ]}
-            activeTab={filter}
-            onChange={setFilter}
-          />
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+        <div className="p-3.5 sm:p-4 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-black/20">
+          <div className="w-full sm:w-auto overflow-hidden">
+            <Tabs
+              tabs={[
+                { id: 'ALL', label: 'All Teams', count: stats.total },
+                { id: STATUS.CHECKED_IN, label: 'Checked In', count: stats.checkedIn },
+                { id: STATUS.PENDING, label: 'Pending', count: stats.pending },
+              ]}
+              activeTab={filter}
+              onChange={setFilter}
+            />
+          </div>
           <div className="w-full sm:w-64">
-            <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search teams..." />
+            <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search team, code..." />
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Mobile View: Card List (Visible on phones) */}
+        <div className="block md:hidden divide-y divide-zinc-800 bg-zinc-900/40">
+          {filteredTeams.length > 0 ? (
+            filteredTeams.map((team) => {
+              const presentCount = team.team_members?.filter((m) => m.is_present).length ?? 0
+              const totalMembers = team.team_members?.length ?? 0
+              return (
+                <div key={team.id} className="p-4 space-y-3 hover:bg-zinc-800/30 transition-colors">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="font-mono text-xs text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded border border-zinc-700/50">
+                        {team.id}
+                      </span>
+                      <h3 className="font-semibold text-white mt-1 text-base leading-snug">{team.team_name}</h3>
+                      <p className="text-xs text-zinc-400 truncate max-w-[240px] mt-0.5">{team.institution}</p>
+                    </div>
+                    <Badge variant={team.status === STATUS.CHECKED_IN ? 'success' : 'warning'} className="shrink-0">
+                      {team.status === STATUS.CHECKED_IN ? 'Checked In' : 'Pending'}
+                    </Badge>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-xs text-zinc-400 border-t border-zinc-800/50">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-1.5">
+                        {team.team_members.slice(0, 3).map((member) => (
+                          <div
+                            key={member.id}
+                            className="h-6 w-6 rounded-full bg-zinc-700 border border-zinc-900 flex items-center justify-center text-[9px] font-medium text-white"
+                          >
+                            {member.name.charAt(0).toUpperCase()}
+                          </div>
+                        ))}
+                      </div>
+                      <span className="font-mono text-zinc-300">
+                        {presentCount}/{totalMembers} present
+                      </span>
+                    </div>
+
+                    {team.checked_in_at && (
+                      <span className="text-[11px] text-zinc-500 font-mono">
+                        {formatTime(new Date(team.checked_in_at))}
+                      </span>
+                    )}
+                  </div>
+
+                  <Link href={`/admin/teams/${team.id}`} className="block pt-1">
+                    <Button variant="secondary" size="sm" className="w-full justify-center gap-2 text-zinc-200 bg-zinc-800/80 hover:bg-zinc-800 border-zinc-700 h-9">
+                      <Eye className="w-4 h-4" /> Manage Attendance
+                    </Button>
+                  </Link>
+                </div>
+              )
+            })
+          ) : (
+            <div className="p-8 text-center text-zinc-500 text-sm">
+              No teams found matching your search.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View: Full Table (Visible on md screens and up) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-300">
             <thead className="bg-zinc-950 text-zinc-400 border-b border-zinc-800 uppercase text-xs font-semibold">
               <tr>
@@ -146,7 +212,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex -space-x-2">
-                        {team.team_members.slice(0, 3).map((member, i) => (
+                        {team.team_members.slice(0, 3).map((member) => (
                           <div
                             key={member.id}
                             className="h-7 w-7 rounded-full bg-zinc-700 border-2 border-zinc-900 flex items-center justify-center text-[10px] font-medium text-white"
