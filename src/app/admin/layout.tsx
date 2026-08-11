@@ -69,36 +69,58 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Mobile Toggle */}
           <button 
             className="md:hidden p-2.5 -mr-2 text-zinc-300 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors focus:outline-none" 
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle Navigation Menu"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open Navigation Menu"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={24} />
           </button>
         </div>
 
-        {/* Mobile Nav Drawer */}
+        {/* Mobile Nav Sidebar */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-2 shadow-2xl animate-in slide-in-from-top-2">
-            {navItems.map((item) => {
-              const isActive = pathname.startsWith(item.href)
-              const Icon = item.icon
-              return (
-                <Link key={item.href} href={item.href}
+          <>
+            {/* Backdrop */}
+            <div 
+              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm animate-in fade-in"
+              onClick={() => setMobileOpen(false)}
+            />
+            
+            {/* Sidebar */}
+            <div className="md:hidden fixed top-0 right-0 z-50 h-full w-[280px] bg-zinc-950 border-l border-white/10 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right-full duration-300">
+              <div className="flex justify-between items-center mb-8">
+                <span className="font-outfit font-bold text-lg tracking-tight text-white">Menu</span>
+                <button 
+                  className="p-2 -mr-2 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors focus:outline-none"
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-colors ${isActive ? 'bg-white text-black font-semibold' : 'text-zinc-300 hover:text-white hover:bg-zinc-900'}`}
                 >
-                  <Icon size={20} />
-                  {item.label}
-                </Link>
-              )
-            })}
-            <div className="pt-3 mt-2 border-t border-white/10">
-              <Button variant="ghost" className="w-full flex justify-start gap-3 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 py-3 text-base h-12" onClick={handleLogout}>
-                <LogOut size={20} />
-                Logout
-              </Button>
+                  <X size={20} />
+                </button>
+              </div>
+              
+              <div className="flex-1 space-y-2">
+                {navItems.map((item) => {
+                  const isActive = pathname.startsWith(item.href)
+                  const Icon = item.icon
+                  return (
+                    <Link key={item.href} href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-colors ${isActive ? 'bg-white text-black font-semibold' : 'text-zinc-300 hover:text-white hover:bg-zinc-900'}`}
+                    >
+                      <Icon size={20} />
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </div>
+
+              <div className="pt-4 border-t border-white/10 mt-auto">
+                <Button variant="ghost" className="w-full flex justify-start gap-3 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 py-3 text-base h-12" onClick={handleLogout}>
+                  <LogOut size={20} />
+                  Logout
+                </Button>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </header>
 
