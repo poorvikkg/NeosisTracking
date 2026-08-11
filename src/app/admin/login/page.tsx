@@ -75,42 +75,42 @@ export default function AdminLogin() {
           <h1 className="text-3xl font-heading font-bold mb-2">Organizer Portal</h1>
           <p className="text-zinc-400">{EVENT_NAME}</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Admin Username</label>
-            <Input 
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+            <Input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700"
               placeholder="admin"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Password</label>
-            <Input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+            <Input
+
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700"
             />
           </div>
-          
+
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-white text-black hover:bg-zinc-200 mt-6" 
+
+          <Button
+            type="submit"
+            className="w-full bg-white text-black hover:bg-zinc-200 mt-6"
             isLoading={isLoading}
           >
             Login to Dashboard
           </Button>
         </form>
-        
+
         <div className="mt-6 text-center text-sm">
           <Link href="/" className="text-zinc-500 hover:text-white transition-colors">
             &larr; Back to home
