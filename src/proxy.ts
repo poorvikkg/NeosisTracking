@@ -37,9 +37,25 @@ export function proxy(request: NextRequest) {
     }
   }
 
+  // Prevent logged-in admins from accessing login page
+  if (pathname === '/admin/login') {
+    const adminToken = request.cookies.get('admin_token')?.value
+    if (adminToken && isTokenValid(adminToken)) {
+      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+    }
+  }
+
+  // Prevent logged-in teams from accessing login page
+  if (pathname === '/login') {
+    const token = request.cookies.get('token')?.value
+    if (token && isTokenValid(token)) {
+      return NextResponse.redirect(new URL('/team/dashboard', request.url))
+    }
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/team/:path*']
+  matcher: ['/admin/:path*', '/team/:path*', '/login']
 }
