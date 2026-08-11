@@ -75,44 +75,44 @@ export default function TeamLogin() {
           <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-2">Team Login</h1>
           <p className="text-zinc-400 text-sm sm:text-base">{EVENT_NAME}</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Team Name</label>
-            <Input 
-              type="text" 
-              value={teamName} 
-              onChange={(e) => setTeamName(e.target.value)} 
+            <Input
+              type="text"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
               required
               className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700"
-              placeholder="e.g. Sahaaya"
+              placeholder="e.g. Team Name"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Team Code</label>
-            <Input 
-              type="text" 
-              value={teamCode} 
-              onChange={(e) => setTeamCode(e.target.value.toUpperCase())} 
+            <Input
+              type="text"
+              value={teamCode}
+              onChange={(e) => setTeamCode(e.target.value.toUpperCase())}
               required
               className="bg-black border-zinc-800 text-white focus-visible:ring-zinc-700 font-mono tracking-wider"
-              placeholder="e.g. BNV-673"
+              placeholder="e.g. Team Code "
             />
             <p className="text-xs text-zinc-500 mt-1.5">The unique code assigned to your team</p>
           </div>
-          
+
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-white text-black hover:bg-zinc-200 mt-6" 
+
+          <Button
+            type="submit"
+            className="w-full bg-white text-black hover:bg-zinc-200 mt-6"
             isLoading={isLoading}
           >
             Login
           </Button>
         </form>
-        
+
         <div className="mt-6 text-center text-sm">
           <Link href="/" className="text-zinc-500 hover:text-white transition-colors">
             &larr; Back to home
