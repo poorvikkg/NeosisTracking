@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             />
             
             {/* Sidebar */}
-            <div className="md:hidden fixed top-0 right-0 z-50 h-full w-[280px] bg-zinc-950 border-l border-white/10 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right-full duration-300">
+            <div className="md:hidden fixed top-0 right-0 z-50 h-full w-[280px] bg-black border-l border-zinc-800 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right-full duration-300">
               <div className="flex justify-between items-center mb-8">
                 <span className="font-outfit font-bold text-lg tracking-tight text-white">Menu</span>
                 <button 

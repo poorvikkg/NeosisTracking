@@ -14,24 +14,6 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
-
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const res = await fetch('/api/admin/teams');
-        if (res.ok) {
-          router.push('/admin/dashboard');
-          return;
-        }
-      } catch (e) {
-        // Ignore
-      } finally {
-        setCheckingAuth(false);
-      }
-    }
-    checkAuth();
-  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +24,7 @@ export default function AdminLogin() {
       const res = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: username.trim(), password: password.trim() }),
       });
 
       if (res.ok) {
@@ -60,13 +42,7 @@ export default function AdminLogin() {
     }
   };
 
-  if (checkingAuth) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-zinc-700 border-t-white animate-spin" />
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
