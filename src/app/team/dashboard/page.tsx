@@ -204,7 +204,7 @@ export default function TeamDashboard() {
       {/* Event Header */}
       <div className="w-full pt-10 pb-6 px-6 bg-gradient-to-b from-white/10 to-transparent relative z-10 flex flex-col items-center border-b border-white/10">
         <div className="text-emerald-400 font-bold tracking-[0.2em] text-xs mb-1 uppercase">Official Participant</div>
-        <div className="font-heading font-black text-white text-2xl tracking-wide uppercase drop-shadow-md">IDEATHON '26</div>
+        <div className="font-heading font-black text-white text-2xl tracking-wide uppercase drop-shadow-md">NOESIS 2026</div>
       </div>
 
       {/* Body */}
