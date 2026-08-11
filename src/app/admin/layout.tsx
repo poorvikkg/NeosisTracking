@@ -14,7 +14,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Teams', href: '/admin/teams/create', icon: Users },
   ]
 
   const handleLogout = async () => {
